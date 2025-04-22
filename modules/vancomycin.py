@@ -3,6 +3,7 @@ import streamlit as st
 import math
 from utils.pk_calculations import PKCalculator
 from utils.clinical_logic import ClinicalInterpreter
+from utils.visualization import PKVisualizer
 from components.ui_components import UIComponents
 from config.drug_configs import DRUG_CONFIGS
 
@@ -73,6 +74,13 @@ class VancomycinModule:
         st.success(f"Recommended dose: {practical_dose} mg every {interval} hours")
         st.info(f"Predicted AUC24: {predicted_auc:.0f} mg·hr/L")
         st.info(f"Predicted Peak: {predicted_levels['peak']:.1f} mg/L | Trough: {predicted_levels['trough']:.1f} mg/L")
+        
+        # Display concentration-time curve
+        PKVisualizer.display_pk_chart(
+            pk_params,
+            predicted_levels,
+            {'tau': interval, 'infusion_duration': infusion_duration}
+        )
         
         # Check targets
         interpreter = ClinicalInterpreter("Vancomycin", regimen, targets)
