@@ -1,7 +1,9 @@
 # modules/aminoglycoside.py
 import streamlit as st
+import math
 from utils.pk_calculations import PKCalculator
 from utils.clinical_logic import ClinicalInterpreter
+from utils.visualization import PKVisualizer
 from components.ui_components import UIComponents
 from config.drug_configs import DRUG_CONFIGS
 
@@ -54,6 +56,13 @@ class AminoglycosideModule:
             pk_params,
             predicted_levels,
             f"Recommended dose: {dose} mg every {tau} hours (infused over {infusion_duration} hr)"
+        )
+        
+        # Display concentration-time curve
+        PKVisualizer.display_pk_chart(
+            pk_params,
+            predicted_levels,
+            {'tau': tau, 'infusion_duration': infusion_duration}
         )
         
         # Clinical interpretation
